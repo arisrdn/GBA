@@ -19,16 +19,16 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('whatsapp_no');
-            $table->string('gender');
-            $table->string('address');
-            $table->string('birth_date');
-            $table->string('photo_profile');
+            $table->string('whatsapp_no')->nullable();
+            $table->string('gender')->nullable();
+            $table->string('address')->nullable();
+            $table->string('birth_date')->nullable();
+            $table->string('photo_profile')->nullable();
             
             
-            $table->foreignId('country_id');
-            $table->foreignId('church_branch_id');
-            $table->foreignId('role_id')->nullable();
+            $table->foreignId('country_id')->nullable();
+            $table->foreignId('church_branch_id')->nullable();
+            $table->foreignId('role_id')->default(2);
             
             $table->string('device_token')->nullable();
             // $table->string('device_name')->nullable();
