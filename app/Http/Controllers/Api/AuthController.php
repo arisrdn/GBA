@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Helpers\APIFormatter;
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Notifications\ApiEmailVerified;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -49,7 +50,7 @@ class AuthController extends Controller
         try {
            
          //store file into  db
-        $user = User::create([
+        $data = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
@@ -63,8 +64,11 @@ class AuthController extends Controller
             'role_id' => 2,
             // 'device_token' => $request->email,
 
-         ])->sendEmailVerificationNotification();
-         dd($user);
+        ]);
+        $user = User::where('email', $data['email'])->firstOrFail();
+        // $data->sendEmailVerificationNotification();
+        $data->notify(new ApiEmailVerified());
+        //  dd($user);
          $user['photo_path']=$path;
         $token = $user->createToken(env("TOKEN_SANCTUM"))->plainTextToken;
         return APIFormatter::responseAPI(201,'success ',$user,null,'token',$token);
@@ -85,7 +89,7 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        dd(asset('images/my-logo.png') );
+        // dd(asset('images/my-logo.png') );
         if (!Auth::attempt($request->only('email', 'password')))
         {
           return APIFormatter::responseAPI(401,'Unauthorized',null,'incorrect username or password');

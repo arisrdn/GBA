@@ -54,6 +54,16 @@ Route::prefix('v1')->group(function () {
      
         
     });
-    Route::get('email/verify/{id}', [VerificationController::class, 'verify'])->name('verification.verify');
+    Route::get('email/verify/{id}', [VerificationController::class, 'verify'])->name('verification.verify.api');
+    Route::get('email/verify-2/{id}', [VerificationController::class, 'verify'])->name('verification.verify');
     Route::get('email/resend', [VerificationController::class, 'resend'])->name('verification.resend');
+
+    Route::middleware(['auth:sanctum'])->group(function () {
+        Route::post('/email/verification-notification', [VerificationController::class, 'resend'])
+            ->name('verification.send');
+    
+        Route::apiResources([
+            // 'posts' => PostController::class,
+        ]);
+    });
 });
