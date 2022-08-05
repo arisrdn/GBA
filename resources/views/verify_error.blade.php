@@ -369,18 +369,18 @@ body {
   <div class="background"></div>
 <div class="container">
 	<div class="row">
-		<div class="modalbox success col-sm-8 col-md-6 col-lg-5 center animate" style="display: block;">
+		<div class="modalbox error col-sm-8 col-md-6 col-lg-5 center animate" style="display: block;">
 			<div class="icon">
-				<span class="glyphicon glyphicon-ok"></span>
+				<span class="glyphicon glyphicon-thumbs-down"></span>
 			</div>
 			<!--/.icon-->
-			<h1>Success!</h1>
+			<h1>Oh no!</h1>
       
 			<p>   
       @if ($status)
         {{ $status }}
       @else
-        Success
+       Oops! Something went wrong,
       @endif
     </p>
             <button type="button" class="btn btn-success" onclick="window.close();">Close</button>

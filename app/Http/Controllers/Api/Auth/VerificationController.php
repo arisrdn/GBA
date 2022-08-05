@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\Auth;
 
 use App\ApiCode;
 use App\Http\Controllers\Controller;
@@ -66,11 +66,11 @@ public function verify($id) {
         // dd(request()->wantsJson());
         return request()->wantsJson()
             ? new JsonResponse('', 204)
-            : view('verify_success');
+            :  view('verify_success')->with('status', __("Your email adress has been  verified"));
     }
     return request()->wantsJson()
         ? new JsonResponse('', 204)
-        : dd('Sudah di verivikasi');
+        : view('verify_error')->with('status', __("Oops! Something went wrong.."));
 }
 
 public function resend() {

@@ -1,10 +1,12 @@
 <?php
 
-use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\Auth\AuthController;
+use App\Http\Controllers\Api\Auth\ForgotPasswordController;
+use App\Http\Controllers\Api\Auth\ResetPasswordController;
+use App\Http\Controllers\Api\Auth\VerificationController;
 use App\Http\Controllers\Api\ChurchBranchController;
 use App\Http\Controllers\Api\ChurchController;
 use App\Http\Controllers\Api\CountryController;
-use App\Http\Controllers\Api\VerificationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -54,11 +56,12 @@ Route::prefix('v1')->group(function () {
      
         
     });
+    // email verify
     Route::get('email/verify/{id}', [VerificationController::class, 'verify'])->name('verification.verify.api');
-    Route::get('email/verify-2/{id}', [VerificationController::class, 'verify'])->name('verification.verify');
-    Route::get('email/resend', [VerificationController::class, 'resend'])->name('verification.resend');
-
+    // Route::get('email/verify-2/{id}', [VerificationController::class, 'verify'])->name('verification.verify');
+    
     Route::middleware(['auth:sanctum'])->group(function () {
+        Route::get('email/resend', [VerificationController::class, 'resend'])->name('verification.resend');
         Route::post('/email/verification-notification', [VerificationController::class, 'resend'])
             ->name('verification.send');
     
@@ -66,4 +69,10 @@ Route::prefix('v1')->group(function () {
             // 'posts' => PostController::class,
         ]);
     });
+
+    // passwor reset 
+    Route::post('password/forgot-password', [ForgotPasswordController::class, 'sendResetLinkResponse']) ->middleware('throttle:6,2')->name('passwords.sent');
+    Route::post('password/reset', [ResetPasswordController::class, 'sendResetResponse'])->name('passwords.reset');
+
+
 });
