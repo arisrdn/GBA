@@ -48,7 +48,7 @@ Route::prefix('v1')->group(function () {
     Route::put('branch/{id}',[ChurchBranchController::class, 'update']);
     Route::delete('branch/{id}',[ChurchBranchController::class, 'destroy']);
     
-    Route::middleware('auth:sanctum','verified')->group(function () {
+    Route::middleware('auth:sanctum','verifiedAPI')->group(function () {
         Route::get('/', function () {
             // Uses first & second middleware...
             return "aaaa";
