@@ -24,8 +24,10 @@ class DatabaseSeeder extends Seeder
             CountrySeeder::class,
             RoleSeeder::class,
             ChurchSeeder::class,
-            ChurchBranchSeeder::class
+            ChurchBranchSeeder::class,
+            GroupPlanSeeder::class,
+            GroupSeeder::class,
+
         ]);
-      
     }
 }

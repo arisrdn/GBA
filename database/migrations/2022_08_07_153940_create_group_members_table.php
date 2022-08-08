@@ -13,20 +13,25 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('reading_groups', function (Blueprint $table) {
+        Schema::create('group_members', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('complete_at')->nullable();
+            $table->string('approved_at')->nullable();
+            $table->string('reason_leave')->nullable();
+            $table->string('leave_at')->nullable();
+            $table->foreignId('reading_group_id');
+            $table->foreignId('user_id');
             $table->timestamps();
         });
     }
 
-    /** 
+    /**
      * Reverse the migrations.
      *
      * @return void
      */
     public function down()
     {
-        Schema::dropIfExists('reading_groups');
+        Schema::dropIfExists('group_members');
     }
 };

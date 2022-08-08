@@ -13,12 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('member_group_activities', function (Blueprint $table) {
+        Schema::create('group_activities', function (Blueprint $table) {
             $table->id();
-            $table->string('read_at')->nullable();
-            $table->string('schedule')->nullable();
-            $table->foreignId('reading_group_activity_id');
-            $table->foreignId('user_id');
+            $table->string('day')->nullable();
+            $table->string('chapter_verse')->nullable();
+            $table->foreignId('reading_group_id');
             $table->timestamps();
         });
     }
@@ -30,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('member_group_activities');
+        Schema::dropIfExists('group_activities');
     }
 };

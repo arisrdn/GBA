@@ -13,10 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('reading_group_activities', function (Blueprint $table) {
+        Schema::create('groups', function (Blueprint $table) {
             $table->id();
-            $table->string('verses')->nullable();
-            $table->foreignId('reading_group_id');
+            $table->string('name');
+            $table->foreignId('group_plan_id');
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('reading_group_activities');
+        Schema::dropIfExists('groups');
     }
 };

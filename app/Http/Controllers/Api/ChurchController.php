@@ -18,11 +18,11 @@ class ChurchController extends Controller
      */
     public function index()
     {
-        $data=Church::all();
+        $data = Church::all();
         if ($data) {
-            return APIFormatter::responseAPI(200,'The request has succeeded',$data);
+            return APIFormatter::responseAPI(200, 'The request has succeeded', $data);
         } else {
-            return APIFormatter::responseAPI(400,'failed');
+            return APIFormatter::responseAPI(400, 'failed');
         }
     }
 
@@ -45,31 +45,30 @@ class ChurchController extends Controller
     public function store(Request $request)
     {
         try {
-            $validator = Validator::make($request->all(),[
-                'name'=>'required',
-             
+            $validator = Validator::make($request->all(), [
+                'name' => 'required',
+
             ]);
 
-            if($validator->fails()) {
+            if ($validator->fails()) {
 
-                return APIFormatter::responseAPI(422,'failed',null,$validator->errors() );
+                return APIFormatter::responseAPI(422, 'failed', null, $validator->errors());
             }
-            $church= Church::create([
-                'name'=>$request->name,
+            $church = Church::create([
+                'name' => $request->name,
             ]);
 
-            $data=$church;
+            $data = $church;
             if ($data) {
                 # code...
-                return APIFormatter::responseAPI(201,'Success Created',$data);
+                return APIFormatter::responseAPI(201, 'Success Created', $data);
             } else {
                 # code...
-                return APIFormatter::responseAPI(400,'failed');
+                return APIFormatter::responseAPI(400, 'failed');
             }
-
         } catch (Exception $err) {
             //throw $th;
-            return APIFormatter::responseAPI(400,'failed');
+            return APIFormatter::responseAPI(400, 'failed', null, $err->getMessage());
         }
     }
 
@@ -82,24 +81,20 @@ class ChurchController extends Controller
     public function show($id)
     {
         try {
-           
-            $data=Church::findOrFail($id)->branch;
+
+            $data = Church::findOrFail($id)->branch;
             if ($data) {
                 # code...
-                return APIFormatter::responseAPI(200,'success',$data);
+                return APIFormatter::responseAPI(200, 'success', $data);
             } else {
                 # code...
-                return APIFormatter::responseAPI(400,'failed');
+                return APIFormatter::responseAPI(400, 'failed');
             }
-
         } catch (Exception $err) {
             //throw $th;
             // dd($err);
-            return APIFormatter::responseAPI(400,'failed',null,$err->getMessage() );
+            return APIFormatter::responseAPI(400, 'failed', null, $err->getMessage());
         }
-        
-
-
     }
 
     /**
@@ -123,34 +118,33 @@ class ChurchController extends Controller
     public function update(Request $request, $id)
     {
         try {
-           
-            $validator = Validator::make($request->all(),[
-                'name'=>'required',
-             
+
+            $validator = Validator::make($request->all(), [
+                'name' => 'required',
+
             ]);
 
-            if($validator->fails()) {
+            if ($validator->fails()) {
 
-                return APIFormatter::responseAPI(422,'failed',null,$validator->errors() );
+                return APIFormatter::responseAPI(422, 'failed', null, $validator->errors());
             }
-            $church =Church::findOrFail($id);
+            $church = Church::findOrFail($id);
             $church->update([
-                'name'=>$request->name,
+                'name' => $request->name,
             ]);
- 
-            $data=$church;
+
+            $data = $church;
             if ($data) {
                 # code...
-                return APIFormatter::responseAPI(200,'success update',$data);
+                return APIFormatter::responseAPI(200, 'success update', $data);
             } else {
                 # code...
-                return APIFormatter::responseAPI(400,'failed');
+                return APIFormatter::responseAPI(400, 'failed');
             }
-
         } catch (Exception $err) {
             //throw $th;
             // dd($err);
-            return APIFormatter::responseAPI(400,'failed',null,$err->getMessage() );
+            return APIFormatter::responseAPI(400, 'failed', null, $err->getMessage());
         }
     }
 
@@ -163,22 +157,21 @@ class ChurchController extends Controller
     public function destroy($id)
     {
         try {
-           
-            $employe =Church::findOrFail($id);
-            $data= $employe->delete();
+
+            $employe = Church::findOrFail($id);
+            $data = $employe->delete();
 
             if ($data) {
                 # code...
-                return APIFormatter::responseAPI(200,'success delete',$data);
+                return APIFormatter::responseAPI(200, 'success delete', $data);
             } else {
                 # code...
-                return APIFormatter::responseAPI(400,'failed');
+                return APIFormatter::responseAPI(400, 'failed');
             }
-
         } catch (Exception $err) {
             //throw $th;
             // dd($err);
-            return APIFormatter::responseAPI(400,'failed',null,$err->getMessage() );
+            return APIFormatter::responseAPI(400, 'failed', null, $err->getMessage());
         }
     }
 }

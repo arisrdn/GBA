@@ -13,14 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('reading_group_members', function (Blueprint $table) {
+        Schema::create('group_plans', function (Blueprint $table) {
             $table->id();
-            $table->string('readingperday')->nullable();
-            $table->string('approved_ad')->nullable();
-            $table->string('reason_leave')->nullable();
-            $table->string('leave_at')->nullable();
-            $table->foreignId('reading_group_id');
-            $table->foreignId('user_id');
+            $table->string("description");
             $table->timestamps();
         });
     }
@@ -32,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('reading_group_members');
+        Schema::dropIfExists('group_plans');
     }
 };
