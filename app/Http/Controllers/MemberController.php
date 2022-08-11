@@ -1,14 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers;
 
-use App\Helpers\APIFormatter;
-use App\Http\Controllers\Controller;
-use App\Models\Group;
-use App\Models\GroupPlan;
 use Illuminate\Http\Request;
 
-class ReadingPlanController extends Controller
+class MemberController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,12 +14,16 @@ class ReadingPlanController extends Controller
     public function index()
     {
         //
-        $data = GroupPlan::all();
-        if ($data) {
-            return APIFormatter::responseAPI(200, 'The request has succeeded', $data);
-        } else {
-            return APIFormatter::responseAPI(400, 'failed');
-        }
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
     }
 
     /**
@@ -46,7 +46,17 @@ class ReadingPlanController extends Controller
     public function show($id)
     {
         //
-        $data = Group::where("group_plan_id", $id)->get();
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        //
     }
 
     /**

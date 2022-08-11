@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\GroupPlan;
+use App\Models\Group;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class UserSeder extends Seeder
+class ReadingGroupSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -16,13 +16,15 @@ class UserSeder extends Seeder
     public function run()
     {
         //
-        GroupPlan::create([
+        Group::create([
             'id' => '1',
-            'name' => 'Gereja Bethany Indonesia - Bethany',
+            'name' => 'GBA PL 2 8A',
+            'group_plan_id' => '2',
         ]);
-        GroupPlan::create([
+        Group::create([
             'id' => '2',
-            'name' => 'Gereja Bethel Indonesia - GBI',
+            'name' => 'GBA PL 1 ',
+            'group_plan_id' => '2',
         ]);
     }
 }

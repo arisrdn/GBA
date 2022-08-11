@@ -25,8 +25,9 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             ChurchSeeder::class,
             ChurchBranchSeeder::class,
+            ReadingGroupSeeder::class,
             GroupPlanSeeder::class,
-            GroupSeeder::class,
+            MemeberSeeder::class,
 
         ]);
     }

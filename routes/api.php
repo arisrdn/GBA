@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\ChurchBranchController;
 use App\Http\Controllers\Api\ChurchController;
 use App\Http\Controllers\Api\CountryController;
 use App\Http\Controllers\Api\GroupController;
+use App\Http\Controllers\Api\GroupMemberController;
 use App\Http\Controllers\Api\ReadingPlanController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -73,5 +74,9 @@ Route::prefix('v1')->group(function () {
         Route::get('/groups', 'index');
         Route::post('group', 'store');
     });
-    Route::get('group/plans', [ReadingPlanController::class, 'index']);
+    Route::get('reading-plans', [ReadingPlanController::class, 'index']);
+    Route::get('reading-plan/{id}', [ReadingPlanController::class, 'show']);
+
+    Route::post('group/request-join', [GroupMemberController::class, 'store']);
+    Route::post('group/request-leave', [GroupMemberController::class, 'update']);
 });

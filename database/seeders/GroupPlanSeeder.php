@@ -6,7 +6,7 @@ use App\Models\GroupPlan;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class GroupPlanSeder extends Seeder
+class GroupPlanSeeder extends Seeder
 {
     /**
      * Run the database seeds.

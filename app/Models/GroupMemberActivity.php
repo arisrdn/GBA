@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class GroupMemberActivity extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        // 'name',
+        // 'group_plan_id',
+
+    ];
 }

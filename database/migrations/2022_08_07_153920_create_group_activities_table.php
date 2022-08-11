@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('day')->nullable();
             $table->string('chapter_verse')->nullable();
-            $table->foreignId('reading_group_id');
+            $table->foreignId('group_id');
             $table->timestamps();
         });
     }

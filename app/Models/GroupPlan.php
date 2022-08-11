@@ -13,4 +13,13 @@ class GroupPlan extends Model
     ];
     protected $hidden = ['updated_at'];
     // protected $hidden = [''];
+
+    public function groups()
+    {
+        return $this->hasMany(Group::class, "group_plan_id");
+    }
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
 }
