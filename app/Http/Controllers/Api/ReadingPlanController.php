@@ -47,6 +47,11 @@ class ReadingPlanController extends Controller
     {
         //
         $data = Group::where("group_plan_id", $id)->get();
+        if ($data) {
+            return APIFormatter::responseAPI(200, 'The request has succeeded', $data);
+        } else {
+            return APIFormatter::responseAPI(400, 'failed');
+        }
     }
 
     /**

@@ -28,6 +28,8 @@ class DatabaseSeeder extends Seeder
             ReadingGroupSeeder::class,
             GroupPlanSeeder::class,
             MemeberSeeder::class,
+            GroupActivitySeeder::class,
+            TodolistSeeder::class
 
         ]);
     }

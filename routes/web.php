@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\MemberController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,10 +21,12 @@ Route::get('/', function () {
 // Route::get('/', function () {
 //     return view('admin/test');
 // });
+Route::get('test', [MemberController::class, 'index']);
 
-Route::get('/dashboard', function () {
-    return view('admin.dashboard');
-})->middleware(['auth'])->name('dashboard');
+
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth'])->name('dashboard');
+Route::post('/approve/join', [DashboardController::class, 'approve'])->middleware(['auth']);
+Route::post('/approve/leave', [DashboardController::class, 'approveleave'])->middleware(['auth']);
 
 Route::get('/member/data', function () {
     return view('admin.test');

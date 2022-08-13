@@ -5,12 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class GroupMemberActivity extends Model
+class GroupTodolist extends Model
 {
     use HasFactory;
     protected $fillable = [
-        // 'name',
-        // 'group_plan_id',
-
+        'group_id',
+        'chapter_verse',
+        'day'
     ];
+    protected $hidden = ['created_at', 'updated_at', 'id'];
 }

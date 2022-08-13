@@ -45,7 +45,7 @@ class GroupMemberController extends Controller
         try {
 
             $validator = Validator::make($request->all(), [
-                'user_id' => 'required',
+                // 'user_id' => 'required',
                 'group_id' => 'required',
             ]);
 
@@ -53,7 +53,8 @@ class GroupMemberController extends Controller
 
                 return APIFormatter::responseAPI(422, 'failed', null, $validator->errors());
             }
-            $check = GroupMember::where('user_id', '=', $request->user_id)
+            $user_id = auth('sanctum')->user()->id;
+            $check = GroupMember::where('user_id', '=', $user_id)
                 ->where('group_id', '=', $request->group_id)->orderBy('created_at', 'DESC')->first();
             // ->sortKeysDesc()->first();
 
@@ -73,7 +74,7 @@ class GroupMemberController extends Controller
                     }
                     // dd('tambah');
                     $data = GroupMember::create([
-                        'user_id' => $request->user_id,
+                        'user_id' => $user_id,
                         'group_id' => $request->group_id
                     ]);
                     if ($data) {
@@ -88,7 +89,7 @@ class GroupMemberController extends Controller
                     }
                     // dd(3);
                     $data = GroupMember::create([
-                        'user_id' => $request->user_id,
+                        'user_id' => $user_id,
                         'group_id' => $request->group_id
                     ]);
                     if ($data) {
@@ -103,7 +104,7 @@ class GroupMemberController extends Controller
 
             // $data = $check;
             $data = GroupMember::create([
-                'user_id' => $request->user_id,
+                'user_id' => $user_id,
                 'group_id' => $request->group_id
             ]);
             if ($data) {
@@ -149,9 +150,9 @@ class GroupMemberController extends Controller
     public function update(Request $request)
     {
         try {
-
+            $user_id = auth('sanctum')->user()->id;
             $validator = Validator::make($request->all(), [
-                'user_id' => 'required',
+                // 'user_id' => 'required',
                 'reason_leave' => 'required',
             ]);
 
@@ -160,7 +161,7 @@ class GroupMemberController extends Controller
                 return APIFormatter::responseAPI(422, 'failed', null, $validator->errors());
             }
 
-            $check = GroupMember::where('user_id', '=', $request->user_id)
+            $check = GroupMember::where('user_id', '=', $user_id)
                 ->orderBy('created_at', 'DESC')->first();
 
             $check->reason_leave = $request->reason_leave;

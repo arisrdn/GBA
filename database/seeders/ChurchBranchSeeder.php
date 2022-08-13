@@ -17,24 +17,24 @@ class ChurchBranchSeeder extends Seeder
     {
         //
         ChurchBranch::create([
-            'address'=>'jl abc',
+            'address' => 'jl abc',
             'name' => 'ALam Sutera',
-            'church_id'=>1
+            'church_id' => 1
         ]);
         ChurchBranch::create([
-            'address'=>'jl abc',
+            'address' => 'jl abc',
             'name' => 'Jaksel',
-            'church_id'=>1
+            'church_id' => 1
         ]);
         ChurchBranch::create([
-            'address'=>'jl abc',
+            'address' => 'jl abc',
             'name' => 'jakpus',
-            'church_id'=>1
+            'church_id' => 2
         ]);
         ChurchBranch::create([
-            'address'=>'jl abc',
+            'address' => 'jl abc',
             'name' => 'palembang',
-            'church_id'=>1
+            'church_id' => 1
         ]);
     }
 }

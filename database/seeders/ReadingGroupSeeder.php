@@ -26,5 +26,10 @@ class ReadingGroupSeeder extends Seeder
             'name' => 'GBA PL 1 ',
             'group_plan_id' => '2',
         ]);
+        Group::create([
+            'id' => '3',
+            'name' => 'GBA PL 1 11 ',
+            'group_plan_id' => '1',
+        ]);
     }
 }

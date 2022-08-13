@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('group_activities', function (Blueprint $table) {
+        Schema::create('group_todolists', function (Blueprint $table) {
             $table->id();
             $table->string('day')->nullable();
             $table->string('chapter_verse')->nullable();
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('group_activities');
+        Schema::dropIfExists('group_todolists');
     }
 };

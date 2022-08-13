@@ -16,4 +16,17 @@ class GroupMember extends Model
         'complete_at',
         'leave_at',
     ];
+    public function group()
+    {
+        return $this->belongsTo(group::class,);
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class, "user_id", 'id');
+    }
+
+    public function post()
+    {
+        return $this->belongsTo(user::class, "user_id", 'id');
+    }
 }

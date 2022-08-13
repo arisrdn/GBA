@@ -16,7 +16,7 @@ class GroupPlan extends Model
 
     public function groups()
     {
-        return $this->hasMany(Group::class, "group_plan_id");
+        return $this->hasMany(Group::class, "group_plan_id", 'id');
     }
     public function comments()
     {

@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\GroupActivityImport;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class MemberController extends Controller
 {
@@ -14,6 +16,7 @@ class MemberController extends Controller
     public function index()
     {
         //
+        Excel::import(new GroupActivityImport(2), public_path('/files/upload.xlsx'));
     }
 
     /**

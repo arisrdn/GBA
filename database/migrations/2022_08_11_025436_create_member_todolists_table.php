@@ -13,12 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('group_member_activities', function (Blueprint $table) {
+        Schema::create('member_todolists', function (Blueprint $table) {
             $table->id();
             $table->string('read_at')->nullable();
-            $table->string('schedule')->nullable();
-            $table->foreignId('group_activity_id');
-            $table->foreignId('user_id')->nullable();
+            $table->string('schedule');
+            $table->foreignId('group_todolist_id');
+            $table->foreignId('group_member_id');
+            // $table->foreignId('user_id')->nullable();
             $table->timestamps();
         });
     }
@@ -30,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('group_member_activities');
+        Schema::dropIfExists('member_todolists');
     }
 };
