@@ -4,9 +4,11 @@ use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\Auth\ForgotPasswordController;
 use App\Http\Controllers\Api\Auth\ResetPasswordController;
 use App\Http\Controllers\Api\Auth\VerificationController;
+use App\Http\Controllers\Api\ChatController;
 use App\Http\Controllers\Api\ChurchBranchController;
 use App\Http\Controllers\Api\ChurchController;
 use App\Http\Controllers\Api\CountryController;
+use App\Http\Controllers\Api\FCMController;
 use App\Http\Controllers\Api\GroupController;
 use App\Http\Controllers\Api\GroupMemberController;
 use App\Http\Controllers\Api\ReadingPlanController;
@@ -86,8 +88,12 @@ Route::prefix('v1')->group(function () {
         route::get('todo/today', [TodoListController::class, 'today']);
         route::get('todo/history', [TodoListController::class, 'history']);
         route::get('todo/summary', [TodoListController::class, 'summary']);
+
+
+        route::get('chat/admins', [ChatController::class, 'index']);
     });
 
+    route::get('save-token', [FCMController::class, 'index']);
 
     // Route::controller(GroupController::class)->group(function () {
     //     Route::get('/groups', 'index');

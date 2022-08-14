@@ -4,6 +4,9 @@
     <li class="nav-item {{ Request::route()->getName() == 'dashboard' ? ' active' : '' }}">
         <a href="{{ route('dashboard') }}" class="nav-link"><i class="fas fa-fire"></i><span>Dashboard</span></a>
     </li>
+    <li class="nav-item {{ Request::route()->getName() == 'dashboard' ? ' active' : '' }}">
+        <a href="{{ route('chat') }}" class="nav-link"><i class="far fa-comment"></i><span>Chat</span></a>
+    </li>
     <li class="menu-header">Starter</li>
     <li class="nav-item dropdown {{ request()->is('member*') ? 'active' : '' }}">
         <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-columns"></i>

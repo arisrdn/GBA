@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Chat;
+use App\Models\Group;
 use App\Models\GroupMember;
 use App\Models\GroupTodolist;
 use App\Models\MemberTodolist;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\View;
 
 class DashboardController extends Controller
 {
@@ -101,32 +105,29 @@ class DashboardController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function cratemessage(Request $request)
     {
         //
+        $chat = Chat::create([
+            'from_id' => auth()->user()->id,
+            'message' => $request->message
+        ]);
+
+        return redirect()->back();
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function update()
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
+        $data = User::all();
+        $data2 = Chat::all();
+        $data3 = Group::all();
+        // dd($data2);
+        // foreach ($data as $key) {
+        //     # code...
+        //     // dd($key->member2());
+        //     dd($key->group->name);
+        // }
+        return view('admin.test')->with('data1', $data,)->with('data2', $data2,)->with('data3', $data3);;
     }
 
     /**
@@ -135,8 +136,11 @@ class DashboardController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function test()
     {
         //
+        return View::make("layouts.partials.chat")
+            ->with("status", "something")
+            ->render();
     }
 }

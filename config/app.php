@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Facade;
+use LaravelFCM\Facades\FCM;
 
 return [
 
@@ -197,6 +198,7 @@ return [
 
         // excel 
         Maatwebsite\Excel\ExcelServiceProvider::class,
+        LaravelFCM\FCMServiceProvider::class,
 
     ],
 
@@ -214,6 +216,7 @@ return [
     'aliases' => Facade::defaultAliases()->merge([
         // 'ExampleClass' => App\Example\ExampleClass::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+        'FCM'      => FCM::class,
 
     ])->toArray(),
 

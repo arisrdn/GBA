@@ -169,4 +169,51 @@
         </div>
 
     </section>
+@section('plugin_js')
+    <script>
+        var firebaseConfig = {
+            apiKey: "AIzaSyANUovdt1apORq-aiSOARqsnkt4s2Q61Uo",
+            authDomain: "gabapp-2d12b.firebaseapp.com",
+            projectId: "gabapp-2d12b",
+            storageBucket: "gabapp-2d12b.appspot.com",
+            messagingSenderId: "55539172106",
+            appId: "1:55539172106:web:2dc032dbb01d43f850b0f3",
+            measurementId: "G-3X0NLCGS86"
+        };
+        // Add the public key generated from the console here.
+        firebase.initializeApp(firebaseConfig);
+        const messaging = firebase.messaging();
+        messaging.getToken().then((currentToken) => {
+            if (currentToken) {
+                // Send the token to your server and update the UI if necessary
+                sendToken(currentToken);
+                console.log('ok');
+
+                // ...
+            } else {
+                // Show permission request UI
+                console.log('No registration token available. Request permission to generate one.');
+                // ...
+            }
+        }).catch((err) => {
+            console.log('An error occurred while retrieving token. ', err);
+            // ...
+        });
+
+
+
+
+        function sendToken(token) {
+            axios.post('{{ route('store.token') }}', {
+                    token
+                })
+                .then(function(response) {
+                    console.log(response);
+                })
+                .catch(function(error) {
+                    console.log(error);
+                });
+        }
+    </script>
+@endsection
 @endsection
