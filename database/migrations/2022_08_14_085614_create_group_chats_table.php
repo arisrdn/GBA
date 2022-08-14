@@ -15,6 +15,10 @@ return new class extends Migration
     {
         Schema::create('group_chats', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('from_id');
+            $table->bigInteger('group_id');
+            $table->string('message')->nullable();
+            $table->string('attachment')->nullable();
             $table->timestamps();
         });
     }

@@ -114,6 +114,7 @@ class MemeberSeeder extends Seeder
             'created_at' => Carbon::yesterday(),
 
         ]);
+
         GroupMember::create([
             'id' => 2,
             'user_id' => '4',

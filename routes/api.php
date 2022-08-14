@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\ChurchBranchController;
 use App\Http\Controllers\Api\ChurchController;
 use App\Http\Controllers\Api\CountryController;
 use App\Http\Controllers\Api\FCMController;
+use App\Http\Controllers\Api\GroupChatController;
 use App\Http\Controllers\Api\GroupController;
 use App\Http\Controllers\Api\GroupMemberController;
 use App\Http\Controllers\Api\ReadingPlanController;
@@ -71,9 +72,6 @@ Route::prefix('v1')->group(function () {
 
     // auth scantum + verify email
     Route::middleware('auth:sanctum', 'verifiedAPI')->group(function () {
-        // Route::get('/', function () {
-        //     return "aaaa";
-        // });
 
         Route::get('reading-plans', [ReadingPlanController::class, 'index']);
         Route::get('reading-plan/{id}', [ReadingPlanController::class, 'show']);
@@ -91,6 +89,9 @@ Route::prefix('v1')->group(function () {
 
 
         route::get('chat/admins', [ChatController::class, 'index']);
+        route::get('chat/admin/{id}', [ChatController::class, 'show']);
+        route::get('chat/group', [GroupChatController::class, 'index']);
+        route::post('chat/group', [GroupChatController::class, 'store']);
     });
 
     route::get('save-token', [FCMController::class, 'index']);
