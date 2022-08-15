@@ -8,12 +8,13 @@ use App\Http\Controllers\Api\ChatController;
 use App\Http\Controllers\Api\ChurchBranchController;
 use App\Http\Controllers\Api\ChurchController;
 use App\Http\Controllers\Api\CountryController;
-use App\Http\Controllers\Api\FCMController;
 use App\Http\Controllers\Api\GroupChatController;
 use App\Http\Controllers\Api\GroupController;
 use App\Http\Controllers\Api\GroupMemberController;
+use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\ReadingPlanController;
 use App\Http\Controllers\Api\TodoListController;
+use App\Http\Controllers\NotificationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -67,6 +68,8 @@ Route::prefix('v1')->group(function () {
         Route::get('email/resend', [VerificationController::class, 'resend'])->name('verification.resend');
         Route::post('/email/verification-notification', [VerificationController::class, 'resend'])
             ->name('verification.send');
+        route::post('token', [ProfileController::class, 'storetoken']);
+        route::get('notification', [NotificationController::class, 'index']);
     });
 
 
@@ -78,7 +81,6 @@ Route::prefix('v1')->group(function () {
 
         Route::post('group/request-join', [GroupMemberController::class, 'store']);
         Route::post('group/request-leave', [GroupMemberController::class, 'update']);
-
         Route::get('groups', [GroupController::class, 'index']);
 
         route::get('todos', [TodoListController::class, 'index']);
@@ -89,15 +91,14 @@ Route::prefix('v1')->group(function () {
 
 
         route::get('chat/admins', [ChatController::class, 'index']);
+        route::post('chat/admin', [ChatController::class, 'store']);
         route::get('chat/admin/{id}', [ChatController::class, 'show']);
         route::get('chat/group', [GroupChatController::class, 'index']);
         route::post('chat/group', [GroupChatController::class, 'store']);
+
+        route::get('profile', [ProfileController::class, 'index']);
+        route::put('profile/update', [ProfileController::class, 'update2']);
+        route::post('profile/update', [ProfileController::class, 'update']);
+        route::put('password/change', [ProfileController::class, 'changepassword']);
     });
-
-    route::get('save-token', [FCMController::class, 'index']);
-
-    // Route::controller(GroupController::class)->group(function () {
-    //     Route::get('/groups', 'index');
-    //     Route::post('group', 'store');
-    // });
 });

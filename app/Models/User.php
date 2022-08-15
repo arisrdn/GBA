@@ -42,6 +42,9 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'role_id',
+        'device_token'
+
     ];
 
     /**
@@ -70,5 +73,13 @@ class User extends Authenticatable
     public function haschats2()
     {
         return $this->belongsToMany(User::class, 'Chats', 'from_id', 'to_id');
+    }
+    public function church_branch()
+    {
+        return $this->belongsTo(ChurchBranch::class, 'church_branch_id', 'id')->with('church');
+    }
+    public function country()
+    {
+        return $this->belongsTo(CountryCode::class, 'country_id', 'id');
     }
 }

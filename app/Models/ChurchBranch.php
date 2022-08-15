@@ -18,10 +18,10 @@ class ChurchBranch extends Model
 
     public function church()
     {
-        return $this->belongsTo(Church::class);
-    
+        return $this->belongsTo(Church::class, 'church_id');
     }
-    public function withChurch() {
-        $this->belongsTo(Church::class)->with('church');
+    public function withChurch()
+    {
+        return $this->belongsTo(Church::class)->with('church');
     }
 }
