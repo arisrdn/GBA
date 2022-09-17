@@ -3,9 +3,13 @@
 namespace App\Http\Controllers\Api;
 
 use App\Helpers\APIFormatter;
+use App\Helpers\Setting;
 use App\Http\Controllers\Controller;
 use App\Models\GroupMember;
+use App\Models\GroupTodolist;
 use App\Models\MemberTodolist;
+use App\Models\WaitingList;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -52,16 +56,39 @@ class TodoListController extends Controller
     public function today()
     {
         $id = auth('sanctum')->user()->id;
-
-        $check = GroupMember::where('user_id', '=', $id)->orderBy('created_at', 'DESC')->first();
-        $data = MemberTodolist::with('todolist')->where('group_member_id', $check->id)->where('schedule', now())->get();
-        // dd($data);
-
+        $gm = GroupMember::where('user_id', '=', $id)->orderBy('id', 'DESC')->first();
+        $gt = GroupTodolist::where("group_id", $gm->group_id)->get();
+        $coun_gt = count($gt);
+        // dd($gm->group->end_date);
+        $data = MemberTodolist::where('group_member_id', $gm->id)->get();
         if ($data) {
-            return APIFormatter::responseAPI(200, 'The request has succeeded', $data);
+            $count = count($data);
+            // $count = 129;
+            $res = $gt[$count];
+            $res["lasread"] = false;
+            $res["group_expire"] = false;
+            if ($count == $coun_gt - 1) {
+                $res["lasread"] = true;
+            }
+            if (today() >= $gm->group->end_date) {
+                $res["lasread"] = true;
+                $res["group_expire"] = true;
+            }
+
+            // dd($count);
+            return APIFormatter::responseAPI(200, 'The request has succeeded', $res);
         } else {
-            return APIFormatter::responseAPI(400, 'failed');
+            return APIFormatter::responseAPI(200, 'The request has succeeded', $gt[0]);
         }
+
+
+        // return APIFormatter::responseAPI(200, 'The request has succeeded', $gt);
+
+        // if ($data) {
+        //     return APIFormatter::responseAPI(200, 'The request has succeeded', $data);
+        // } else {
+        //     return APIFormatter::responseAPI(400, 'failed');
+        // }
     }
     public function history()
     {
@@ -90,15 +117,47 @@ class TodoListController extends Controller
 
                 return APIFormatter::responseAPI(422, 'failed', null, $validator->errors());
             }
-            $id = $request->todo_id;
-            $church = MemberTodolist::findOrFail($id);
-            $church->update([
-                'read_at' => now()
+            $todo_id = $request->todo_id;
+            $id = auth('sanctum')->user()->id;
+            $gm = GroupMember::where('user_id', '=', $id)->orderBy('id', 'DESC')->first();
+            $read = now();
+            $endtime = Carbon::parse(date("Y-m-d") . " " . Setting::ENDTIME);
+
+
+            if ($read < $endtime) {
+                # code...
+                $read = Carbon::parse(date("Y-m-d") . " " . Setting::STARTTIME)->addDay(1);
+            }
+            $check = MemberTodolist::where("group_todolist_id", $todo_id)->where("group_member_id", $gm->id)->first();
+            if ($check) {
+                return APIFormatter::responseAPI(200, 'already submitted');
+            }
+            $todo = MemberTodolist::create([
+                'group_todolist_id' => $todo_id,
+                'group_member_id' =>  $gm->id,
+                'read_at' => $read,
             ]);
-            $data = $church;
+
+
+            if ($request->transfer) {
+                // dd()
+                $data = WaitingList::create([
+                    'user_id' => $id,
+                    'type' => "transfer",
+                    'data' => $request->transfer
+                ]);
+            }
+            $mt = MemberTodolist::where('group_member_id', $gm->id)->get();
+            $gt = GroupTodolist::where("group_id", $gm->group_id)->get();
+            if (count($mt) == count($gt)) {
+                # code...
+                $gm->complete_at = now();
+                $gm->save();
+            }
+            $data = $todo;
             if ($data) {
                 # code...
-                return APIFormatter::responseAPI(200, 'success update', $data);
+                return APIFormatter::responseAPI(200, 'post read success', $data);
             } else {
                 # code...
                 return APIFormatter::responseAPI(400, 'failed');

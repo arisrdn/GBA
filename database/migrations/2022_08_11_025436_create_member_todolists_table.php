@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('member_todolists', function (Blueprint $table) {
             $table->id();
             $table->string('read_at')->nullable();
-            $table->string('schedule');
+            $table->string('schedule')->nullable();
             $table->foreignId('group_todolist_id');
             $table->foreignId('group_member_id');
             // $table->foreignId('user_id')->nullable();

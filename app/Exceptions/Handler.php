@@ -48,8 +48,17 @@ class Handler extends ExceptionHandler
         $this->renderable(function (NotFoundHttpException $e, $request) {
             if ($request->is('api/*')) {
                 return response()->json([
+                    "status" => 404,
                     'message' => ' not found.'
                 ], 404);
+            }
+        });
+        $this->renderable(function (\Illuminate\Auth\AuthenticationException $e, $request) {
+            if ($request->is('api/*')) {
+                return response()->json([
+                    "status" => 401,
+                    'message' => 'Not authenticated'
+                ], 401);
             }
         });
         $this->reportable(function (Throwable $e) {

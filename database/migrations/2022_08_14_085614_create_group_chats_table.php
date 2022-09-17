@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->bigInteger('from_id');
             $table->bigInteger('group_id');
-            $table->string('message')->nullable();
+            $table->text('message')->nullable();
             $table->string('attachment')->nullable();
             $table->timestamps();
         });

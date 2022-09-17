@@ -11,10 +11,12 @@ use App\Http\Controllers\Api\CountryController;
 use App\Http\Controllers\Api\GroupChatController;
 use App\Http\Controllers\Api\GroupController;
 use App\Http\Controllers\Api\GroupMemberController;
+use App\Http\Controllers\Api\LocationController;
 use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\ReadingPlanController;
 use App\Http\Controllers\Api\TodoListController;
-use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\API\NotificationController;
+use App\Http\Controllers\Api\WaitingListController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -46,6 +48,9 @@ Route::prefix('v1')->group(function () {
     Route::put('branch/{id}', [ChurchBranchController::class, 'update']);
     Route::delete('branch/{id}', [ChurchBranchController::class, 'destroy']);
 
+    // region
+    Route::get('provinces', [LocationController::class, 'index']);
+    Route::get('regencies/{id}', [LocationController::class, 'show']);
 
     // auth user
     Route::post('register', [AuthController::class, 'register']);
@@ -66,10 +71,13 @@ Route::prefix('v1')->group(function () {
     //    auth scantum
     Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('email/resend', [VerificationController::class, 'resend'])->name('verification.resend');
-        Route::post('/email/verification-notification', [VerificationController::class, 'resend'])
-            ->name('verification.send');
+        // Route::post('/email/verification-notification', [VerificationController::class, 'resend'])
+        //     ->name('verification.send');
         route::post('token', [ProfileController::class, 'storetoken']);
-        route::get('notification', [NotificationController::class, 'index']);
+        route::get('notifications', [NotificationController::class, 'index']);
+        route::get('notification/unread', [NotificationController::class, 'unread']);
+        route::post('notification/read/:id', [NotificationController::class, 'update']);
+        route::post('notification/readall', [NotificationController::class, 'all']);
     });
 
 
@@ -77,14 +85,21 @@ Route::prefix('v1')->group(function () {
     Route::middleware('auth:sanctum', 'verifiedAPI')->group(function () {
 
         Route::get('reading-plans', [ReadingPlanController::class, 'index']);
-        Route::get('reading-plan/{id}', [ReadingPlanController::class, 'show']);
+        // Route::get('reading-plan/{id}', [ReadingPlanController::class, 'show']);
+        // Route::post('group/join', [WaitingListController::class, 'join']);
+        Route::post('group/join', [WaitingListController::class, 'join'])->middleware(["waitinglist", "active:join"]);
+        Route::post('group/leave', [WaitingListController::class, 'leave'])->middleware(["waitinglist", "active:leave"]);
+        Route::post('group/transfer', [WaitingListController::class, 'transfer'])->middleware(["waitinglist", "active:transfer"]);
 
-        Route::post('group/request-join', [GroupMemberController::class, 'store']);
-        Route::post('group/request-leave', [GroupMemberController::class, 'update']);
+
+        // Route::post('group/request-join', [GroupMemberController::class, 'store']);
+        // Route::post('group/request-leave', [GroupMemberController::class, 'update']);
+        // Route::post('group/request-transfer', [GroupMemberController::class, 'transfer']);
+        Route::post('group/history', [GroupMemberController::class, 'index']);
         Route::get('groups', [GroupController::class, 'index']);
 
         route::get('todos', [TodoListController::class, 'index']);
-        route::post('todo', [TodoListController::class, 'store']);
+        route::post('todo', [TodoListController::class, 'store'])->middleware(["waitinglist", "active:transfer"]);
         route::get('todo/today', [TodoListController::class, 'today']);
         route::get('todo/history', [TodoListController::class, 'history']);
         route::get('todo/summary', [TodoListController::class, 'summary']);
@@ -93,7 +108,8 @@ Route::prefix('v1')->group(function () {
         route::get('chat/admins', [ChatController::class, 'index']);
         route::post('chat/admin', [ChatController::class, 'store']);
         route::get('chat/admin/{id}', [ChatController::class, 'show']);
-        route::get('chat/group', [GroupChatController::class, 'index']);
+        route::get('chat/groups', [GroupChatController::class, 'index']);
+        route::get('chat/group/{id}', [GroupChatController::class, 'show']);
         route::post('chat/group', [GroupChatController::class, 'store']);
 
         route::get('profile', [ProfileController::class, 'index']);
@@ -101,4 +117,5 @@ Route::prefix('v1')->group(function () {
         route::post('profile/update', [ProfileController::class, 'update']);
         route::put('password/change', [ProfileController::class, 'changepassword']);
     });
+    route::get('tes', [ProfileController::class, 'tes']);
 });

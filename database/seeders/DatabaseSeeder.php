@@ -21,16 +21,8 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
         $this->call([
-            CountrySeeder::class,
-            RoleSeeder::class,
-            ChurchSeeder::class,
-            ChurchBranchSeeder::class,
-            ReadingGroupSeeder::class,
-            GroupPlanSeeder::class,
-            MemeberSeeder::class,
-            GroupActivitySeeder::class,
-            TodolistSeeder::class
-
+            MasterDataSeeder::class,
+            DummyDataSeeder::class,
         ]);
     }
 }

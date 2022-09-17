@@ -12,9 +12,9 @@ class MemberTodolist extends Model
         'group_member_id',
         'group_todolist_id',
         'read_at',
-        'schedule',
+        // 'schedule',
     ];
-    protected $hidden = ['created_at', 'updated_at'];
+    protected $hidden = ['created_at', 'updated_at', 'schedule'];
 
 
     public function todolist()

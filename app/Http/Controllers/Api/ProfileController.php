@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Helpers\APIFormatter;
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Notifications\Chatnotification;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -23,10 +24,21 @@ class ProfileController extends Controller
         $id = auth('sanctum')->user()->id;
 
         $data = User::with('church_branch', 'country')->find($id);
+        $data['photo_path'] =  asset('images/users/') . $data->photo_profile;
+
         // dd($data);
         return APIFormatter::responseAPI(200, 'The request has succeeded', $data);
     }
 
+    public function tes()
+    {
+
+
+        $data = User::find(4);
+        $data->notify(new Chatnotification);
+        // dd($data);
+        // return APIFormatter::responseAPI(200, 'The request has succeeded', $data);
+    }
 
     public function changepassword(Request $request)
     {
@@ -106,7 +118,7 @@ class ProfileController extends Controller
                 'role_id' => 2,
             ]);
             $user = User::where('email', $data['email'])->with('church_branch', 'country')->firstOrFail();
-            $user['photo_path'] =  public_path('images/users/') . $user->photo_profile;
+            $user['photo_path'] =  asset('images/users/') . $user->photo_profile;
 
             return APIFormatter::responseAPI(200, 'success update', $user);
         } catch (Exception $err) {
@@ -127,14 +139,17 @@ class ProfileController extends Controller
      */
     public function storetoken(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'device_token' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return APIFormatter::responseAPI(422, 'Validation Failed ', null, $validator->errors());
+        }
         try {
             $user_id = auth('sanctum')->user()->id;
             $user = User::find($user_id)->first();
-            $user->device_token = $request->token;
+            $user->device_token = $request->device_token;
             $user->save();
-            // Auth::user()->update(['device_token' => $request->token]);
-            // auth()->user()->update
-            // return response()->json(['Token successfully stored.']);
 
             $data = $user;
             if ($data) {

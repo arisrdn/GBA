@@ -17,4 +17,17 @@ class GroupChat extends Model
     protected $hidden = [
         'updated_at'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'from_id');
+    }
+    public function sender()
+    {
+        return $this->belongsTo(User::class, 'from_id')->select(['id', 'name']);
+    }
+    public function group()
+    {
+        return $this->belongsTo(Group::class, 'group_id')->get('name');
+    }
 }

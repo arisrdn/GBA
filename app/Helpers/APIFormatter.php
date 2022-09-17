@@ -14,34 +14,34 @@ class APIFormatter
     public static function responseAPI($code = null, $message = null, $data = null, $error = null, $customename = null, $customvalue = null)
     {
         $status = 1;
-        switch ($code) {
-            case 200:
-                $status = "success";
-                // $message="The request has succeeded";
-                break;
-            case 201:
-                $status = "success";
-                $message = "Success Created";
-                break;
-            case 202:
-                $status = "success";
-                $message = "The request has been accepted for processing";
-                break;
-            case 400:
-                $status = "error";
-                $message = "Bad Request";
-                break;
-            case 401:
-                $status = "error";
-                $message = "Unauthorized";
-                break;
-            default:
-                $status = "error";
-        }
+        // switch ($code) {
+        //     case 200:
+        //         $status = "success";
+        //         // $message="The request has succeeded";
+        //         break;
+        //     case 201:
+        //         $status = "success";
+        //         $message = "Success Created";
+        //         break;
+        //     case 202:
+        //         $status = "success";
+        //         $message = "The request has been accepted for processing";
+        //         break;
+        //     case 400:
+        //         $status = "error";
+        //         $message = "Bad Request";
+        //         break;
+        //     case 401:
+        //         $status = "error";
+        //         $message = "Unauthorized";
+        //         break;
+        //     default:
+        //         $status = "error";
+        // }
 
         // dd($status);
 
-        self::$response['status'] = $status;
+        self::$response['status'] = $code;
         self::$response['message'] = $message;
         self::$response['data'] = $data;
         if ($error) {

@@ -123,8 +123,9 @@ class ChatController extends Controller
         $downstreamResponse = FCM::sendTo($tokens, $option, $notification, $data);
         return $downstreamResponse->numberSuccess();
     }
-    public function personalhmessage($sendername, $message, $token)
+    public function personalhmessage($sendername, $message, $userid)
     {
+        $user = User::find($userid)->fisrt();
         $optionBuilder = new OptionsBuilder();
         $optionBuilder->setTimeToLive(60 * 20);
 
@@ -139,7 +140,7 @@ class ChatController extends Controller
         $notification = $notificationBuilder->build();
         $data = $dataBuilder->build();
 
-        $token = "a_registration_from_your_database";
+        $token = $user->devce_token;
 
         $downstreamResponse = FCM::sendTo($token, $option, $notification, $data);
         return $downstreamResponse->numberSuccess();

@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\groupAdmin;
 use App\Models\GroupTodolist;
 use App\Models\MemberTodolist;
 use Carbon\Carbon;
@@ -18,21 +19,51 @@ class TodolistSeeder extends Seeder
     public function run()
     {
 
-        $data = GroupTodolist::where("group_id", 1)->get();
-        // dd($data);
-        foreach ($data as  $val) {
-            // echo $value->day;
-            MemberTodolist::create([
-                'group_member_id' => 3,
-                'group_todolist_id' => $val->id,
-                'read_at' => Carbon::yesterday(),
-                'schedule' => Carbon::tomorrow()->addDays($val->day)
-            ]);
-            MemberTodolist::create([
-                'group_member_id' => 6,
-                'group_todolist_id' => $val->id,
-                'schedule' => Carbon::tomorrow()->addDays($val->day)
-            ]);
-        }
+        groupAdmin::create([
+            'user_id' => '3',
+            'group_id' => '1',
+            'type' => '0',
+        ]);
+        groupAdmin::create([
+            'user_id' => '3',
+            'group_id' => '2',
+            'type' => '1',
+        ]);
+        groupAdmin::create([
+            'user_id' => '3',
+            'group_id' => '3',
+            'type' => '1',
+
+        ]);
+        groupAdmin::create([
+            'user_id' => '4',
+            'group_id' => '1',
+            'type' => '1',
+
+        ]);
+        groupAdmin::create([
+            'user_id' => '4',
+            'group_id' => '2',
+            'type' => '0',
+
+        ]);
+        groupAdmin::create([
+            'user_id' => '4',
+            'group_id' => '3',
+            'type' => '0',
+
+        ]);
+        groupAdmin::create([
+            'user_id' => '5',
+            'group_id' => '1',
+            'type' => '0',
+
+        ]);
+        groupAdmin::create([
+            'user_id' => '5',
+            'group_id' => '2',
+            'type' => '0',
+
+        ]);
     }
 }

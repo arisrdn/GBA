@@ -44,12 +44,13 @@ class ApiEmailVerified extends Notification
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
     public function toMail($notifiable)
-    { $verificationUrl = $this->verificationUrl($notifiable);
+    {
+        $verificationUrl = $this->verificationUrl($notifiable);
         return (new MailMessage)
-                    ->subject(Lang::get('Verify Email Address'))
-                    ->line(Lang::get('Please click the button below to verify your email address.'))
-                    ->action(Lang::get('Verify Email Address'), url($verificationUrl))
-                    ->line(Lang::get('If you did not create an account, no further action is required.'));
+            ->subject(Lang::get('Verify Email Address'))
+            ->line(Lang::get('Please click the button below to verify your email address.'))
+            ->action(Lang::get('Verify Email Address'), url($verificationUrl))
+            ->line(Lang::get('If you did not create an account, no further action is required.'));
     }
 
     /**

@@ -13,5 +13,5 @@ class GroupTodolist extends Model
         'chapter_verse',
         'day'
     ];
-    protected $hidden = ['created_at', 'updated_at', 'id'];
+    protected $hidden = ['created_at', 'updated_at'];
 }

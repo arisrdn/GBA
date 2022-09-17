@@ -2,7 +2,10 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\activeuser;
+use App\Http\Middleware\CheckRole;
 use App\Http\Middleware\EnsureEmailIsVerifiedAPI;
+use App\Http\Middleware\WaitingList;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -65,5 +68,8 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'verifiedAPI' => EnsureEmailIsVerifiedAPI::class,
+        'role' => CheckRole::class,
+        'waitinglist' => WaitingList::class,
+        "active" => activeuser::class,
     ];
 }

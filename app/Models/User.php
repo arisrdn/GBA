@@ -30,6 +30,7 @@ class User extends Authenticatable
         'church_branch_id',
         'role_id',
         'device_token',
+        'regency_id'
 
 
     ];
@@ -43,8 +44,7 @@ class User extends Authenticatable
         'password',
         'remember_token',
         'role_id',
-        'device_token'
-
+        // 'device_token'
     ];
 
     /**
@@ -70,16 +70,58 @@ class User extends Authenticatable
         return $this->hasMany(Chat::class, 'from_id');
     }
 
-    public function haschats2()
-    {
-        return $this->belongsToMany(User::class, 'Chats', 'from_id', 'to_id');
-    }
+
     public function church_branch()
     {
         return $this->belongsTo(ChurchBranch::class, 'church_branch_id', 'id')->with('church');
     }
+
+
+    public function group()
+    {
+        return $this->belongsToMany(Group::class, GroupMember::class);
+    }
+    public function adminGroup()
+    {
+        return $this->hasMany(GroupAdmin::class, 'user_id');
+    }
+
+    public function member()
+    {
+        return $this->hasMany(GroupMember::class);
+    }
+    public function memberactive()
+    {
+        return $this->hasMany(GroupMember::class)->orderBy("id", "DESC")->take(1);
+    }
+    // Country
     public function country()
     {
         return $this->belongsTo(CountryCode::class, 'country_id', 'id');
+    }
+    public function regency()
+    {
+        return $this->belongsTo(Regency::class, 'regency_id', 'id');
+    }
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class, 'role_id', 'id');
+    }
+
+
+    public function waitinglist()
+    {
+        return $this->hasOne(WaitingList::class, 'user_id');
+    }
+
+
+    public function hasRole($role)
+    {
+        // check param $role dengan field usertype
+        if ($role == 2) {
+            return true;
+        }
+        return false;
     }
 }

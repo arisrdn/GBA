@@ -18,7 +18,8 @@ class GroupController extends Controller
      */
     public function index()
     {
-        $data = Group::all();
+        $data = Group::withCount('user')->get();
+        dd($data);
         if ($data) {
             return APIFormatter::responseAPI(200, 'The request has succeeded', $data);
         } else {

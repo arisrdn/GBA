@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use App\Helpers\APIFormatter;
-use App\Models\Notification;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+
 
 class NotificationController extends Controller
 {
@@ -16,12 +17,16 @@ class NotificationController extends Controller
     public function index()
     {
         //
-        $id = auth('sanctum')->user()->id;
-
-        $data = Notification::where('user_id', $id)->get();
-        // dd($data);
+        $data = auth()->user()->notifications;
         return APIFormatter::responseAPI(200, 'The request has succeeded', $data);
     }
+    public function unread()
+    {
+        //
+        $data = auth()->user()->unreadNotifications;
+        return APIFormatter::responseAPI(200, 'The request has succeeded', $data);
+    }
+
 
     /**
      * Store a newly created resource in storage.
@@ -52,9 +57,12 @@ class NotificationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function all()
     {
-        //
+
+        $user = auth()->user();
+        $user->unreadNotifications->markAsRead();
+        return APIFormatter::responseAPI(200, 'Sukes', $user);
     }
 
     /**
@@ -66,5 +74,16 @@ class NotificationController extends Controller
     public function destroy($id)
     {
         //
+    }
+    public function markNotification(Request $request)  
+    {
+        auth()->user()
+            ->unreadNotifications
+            ->when($request->input('id'), function ($query) use ($request) {
+                return $query->where('id', $request->input('id'));
+            })
+            ->markAsRead();
+
+        return response()->noContent();
     }
 }

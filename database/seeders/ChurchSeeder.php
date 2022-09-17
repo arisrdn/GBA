@@ -17,14 +17,20 @@ class ChurchSeeder extends Seeder
     {
         //
         Church::create([
-            'id'=> '1',
+            'id' => '1',
             'name' => 'Gereja Bethany Indonesia - Bethany',
         ]);
         Church::create([
-            'id'=> '2',
+            'id' => '2',
             'name' => 'Gereja Bethel Indonesia - GBI',
         ]);
-    
-        }
-    
+        Church::create([
+            'id' => '3',
+            'name' => 'Gereja Bethel - GBI2',
+        ]);
+        Church::create([
+            'id' => '4',
+            'name' => 'Gereja Bethel - GBI3',
+        ]);
+    }
 }

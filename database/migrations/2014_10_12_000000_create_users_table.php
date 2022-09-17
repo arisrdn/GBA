@@ -28,12 +28,10 @@ return new class extends Migration
 
             $table->foreignId('country_id')->nullable();
             $table->foreignId('church_branch_id')->nullable();
+            $table->foreignId('regency_id')->nullable();
             $table->foreignId('role_id')->default(2);
 
             $table->text('device_token')->nullable();
-            // $table->string('device_name')->nullable();
-
-
             $table->rememberToken();
             $table->timestamps();
         });

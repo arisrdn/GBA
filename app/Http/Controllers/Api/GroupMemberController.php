@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Helpers\APIFormatter;
+use App\Helpers\Notify;
 use App\Http\Controllers\Controller;
 use App\Models\GroupMember;
 use Exception;
@@ -19,6 +20,13 @@ class GroupMemberController extends Controller
     public function index()
     {
         //
+        $id = auth('sanctum')->user()->id;
+        $data = GroupMember::where('user_id', $id)->get();
+        if ($data) {
+            return APIFormatter::responseAPI(201, 'Request Success', $data);
+        } else {
+            return APIFormatter::responseAPI(400, 'failed');
+        }
     }
 
     /**
@@ -61,10 +69,9 @@ class GroupMemberController extends Controller
             // dd($check->approved_at);
 
             if ($check) {
-                // dd(1);
+
                 if ($check->approved_at == null) {
-                    # code...
-                    // dd('11');
+
                     return APIFormatter::responseAPI(400, 'failed');
                 } elseif ($check->leave_at == null) {
                     # code...
@@ -78,7 +85,8 @@ class GroupMemberController extends Controller
                         'group_id' => $request->group_id
                     ]);
                     if ($data) {
-                        return APIFormatter::responseAPI(201, 'Success Created', $data);
+                        Notify::joingroup($user_id, $request->group_id);
+                        return APIFormatter::responseAPI(201, 'Request Success', $data);
                     } else {
                         return APIFormatter::responseAPI(400, 'failed');
                     }
@@ -93,7 +101,8 @@ class GroupMemberController extends Controller
                         'group_id' => $request->group_id
                     ]);
                     if ($data) {
-                        return APIFormatter::responseAPI(201, 'Success Created', $data);
+                        Notify::joingroup($user_id, $request->group_id);
+                        return APIFormatter::responseAPI(201, 'Request Success', $data);
                     } else {
                         return APIFormatter::responseAPI(400, 'failed');
                     }
@@ -108,7 +117,7 @@ class GroupMemberController extends Controller
                 'group_id' => $request->group_id
             ]);
             if ($data) {
-                return APIFormatter::responseAPI(201, 'Success Created', $data);
+                return APIFormatter::responseAPI(201, 'Request Success', $data);
             } else {
                 return APIFormatter::responseAPI(400, 'failed');
             }
@@ -167,6 +176,38 @@ class GroupMemberController extends Controller
             $check->reason_leave = $request->reason_leave;
 
             $check->save();
+            $data = $check;
+            if ($data) {
+                return APIFormatter::responseAPI(200, 'Request success', $data);
+            } else {
+                return APIFormatter::responseAPI(400, 'failed');
+            }
+        } catch (Exception $err) {
+            throw $err;
+            return APIFormatter::responseAPI(400, 'failed', null, $err->getMessage());
+        }
+    }
+
+    public function transfer(Request $request)
+    {
+        try {
+            $user_id = auth('sanctum')->user()->id;
+            $validator = Validator::make($request->all(), [
+                // 'user_id' => 'required',
+                'tranfer' => 'required',
+            ]);
+
+            if ($validator->fails()) {
+
+                return APIFormatter::responseAPI(422, 'failed', null, $validator->errors());
+            }
+
+            $check = GroupMember::where('user_id', '=', $user_id)
+                ->orderBy('created_at', 'DESC')->first();
+
+            $check->transfer = $request->transfer;
+
+            $check->save();
 
             // $check->update([
             //     'reason_leave' => $request->reason_leave
@@ -185,7 +226,6 @@ class GroupMemberController extends Controller
             return APIFormatter::responseAPI(400, 'failed', null, $err->getMessage());
         }
     }
-
     /**
      * Remove the specified resource from storage.
      *

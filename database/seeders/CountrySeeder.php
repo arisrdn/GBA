@@ -19,11 +19,11 @@ class CountrySeeder extends Seeder
     {
         // seed country
         CountryCode::truncate();
-  
+
         $json = File::get("database/data/country.json");
         // $json = File::get(public_path("data/country.json"));
         $countries = json_decode($json);
-  
+
         foreach ($countries as $key => $value) {
             // dd($value->dial_code);
             CountryCode::create([

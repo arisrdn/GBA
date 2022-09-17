@@ -28,5 +28,9 @@ class GroupPlanSeeder extends Seeder
             'id' => '3',
             'description' => '3 ayat perhari',
         ]);
+        GroupPlan::create([
+            'id' => 4,
+            'description' => '4 ayat perhari ',
+        ]);
     }
 }

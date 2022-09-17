@@ -19,12 +19,36 @@ firebase.initializeApp({
 // Retrieve an instance of Firebase Messaging so that it can handle background
 // messages.
 const messaging = firebase.messaging();
-messaging.setBackgroundMessageHandler(function (payload) {
-    console.log("Message received.", payload);
-    const title = "Hello world is awesome";
-    const options = {
-        body: "Your notificaiton message .",
-        icon: "/firebase-logo.png",
+// messaging.setBackgroundMessageHandler(function (payload) {
+//     console.log("Message received.", payload);
+//     const title = "Hello world is awesome";
+//     const options = {
+//         body: "Your notificaiton message .",
+//         icon: "/firebase-logo.png",
+//     };
+//     return self.registration.showNotification(title, options);
+// });
+
+messaging.onBackgroundMessage(function (payload) {
+    console.log("Received background message ", payload);
+
+    const notificationTitle = payload.notification.title;
+    const notificationOptions = {
+        body: payload.notification.body,
+        // icon: "/logo-GBA.png",
+        badge: "/logo-GBA.png",
     };
-    return self.registration.showNotification(title, options);
+
+    self.registration
+        .showNotification(notificationTitle, notificationOptions)
+        .then(() => self.registration.getNotifications())
+        .then((notifications) => {
+            setTimeout(
+                () =>
+                    notifications.forEach((notification) =>
+                        notification.close()
+                    ),
+                3000
+            );
+        });
 });

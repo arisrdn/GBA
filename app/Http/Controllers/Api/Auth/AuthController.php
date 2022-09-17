@@ -5,13 +5,16 @@ namespace App\Http\Controllers\Api\Auth;
 use App\Helpers\APIFormatter;
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Notifications\ApiEmailVerified;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use App\Helpers\Message;
+use App\Helpers\Notify;
+use App\Notifications\ApiEmailVerified;
+use App\Notifications\User\GlobalNotification;
 
 class AuthController extends Controller
 {
@@ -30,6 +33,7 @@ class AuthController extends Controller
             'photo_profile' => 'required',
             'country_id' => 'required',
             'church_branch_id' => 'required',
+            'regency_id' => 'required',
             // 'device_token' => 'required',
             // 'role_id' => 'required',
         ]);
@@ -59,22 +63,24 @@ class AuthController extends Controller
                 'photo_profile' => $name,
                 'country_id' => $request->country_id,
                 'church_branch_id' => $request->church_branch_id,
+                'regency_id' => $request->regency_id,
                 'role_id' => 2,
             ]);
             $user = User::where('email', $data['email'])->with('church_branch', 'country')->firstOrFail();
-            $user['photo_path'] =  public_path('images/users/') . $user->photo_profile;
+            $user['photo_path'] =  asset('images/users/') . $user->photo_profile;
             // $data->sendEmailVerificationNotification();
             $data->notify(new ApiEmailVerified());
+            $data->notify(new GlobalNotification(Message::REGISTER));
+            Notify::GlobalUserNotify(Message::REGISTER);
+
 
             $token = $user->createToken(env("TOKEN_SANCTUM"))->plainTextToken;
-            return APIFormatter::responseAPI(201, 'success ', $user, null, 'token', $token);
+            return APIFormatter::responseAPI(201, 'Register Success ', $user, null, 'token', $token);
         } catch (Exception $err) {
             //throw $th;
             $file_path = public_path('images/users/') . $name;
             if (File::exists($file_path)) {
-                // File::delete($file_path);
                 unlink($file_path);
-                // dd($file_path);
             }
             return APIFormatter::responseAPI(400, 'failed', null, $err->getMessage());
         }
@@ -84,15 +90,15 @@ class AuthController extends Controller
     {
         // dd(asset('images/my-logo.png') );
         if (!Auth::attempt($request->only('email', 'password'))) {
-            return APIFormatter::responseAPI(401, 'Unauthorized', null, 'incorrect username or password');
+            return APIFormatter::responseAPI(400, 'Login Failed', null, 'incorrect username or password');
         }
 
         $user = User::where('email', $request['email'])->with('church_branch', 'country')->firstOrFail();
-        $user['photo_path'] =  public_path('images/users/') . $user->photo_profile;
+        $user['photo_path'] =  asset('images/users/') . $user->photo_profile;
 
         $token = $user->createToken(env("TOKEN_SANCTUM"))->plainTextToken;
 
-        return APIFormatter::responseAPI(201, 'success ', $user, null, 'token', $token);
+        return APIFormatter::responseAPI(200, 'success login', $user, null, 'token', $token);
     }
 
     // method for user logout and delete token

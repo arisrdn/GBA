@@ -20,9 +20,11 @@
                             <h4>Login</h4>
                         </div>
                         <!-- Session Status -->
-                        <x-auth-session-status class="mb-4" :status="session('status')" />
+                        {{-- <x-auth-session-status class="mb-4" :status="session('status')" />
                         <!-- Validation Errors -->
-                        <x-auth-validation-errors-cs class="col" :errors="$errors" />
+                        <x-auth-validation-errors-cs class="col" :errors="$errors" /> --}}
+                        @include('layouts.partials.flash-message')
+
                         <div class="card-body">
                             <form method="POST" action="{{ route('login') }}" class="needs-validation" novalidate="">
                                 @csrf

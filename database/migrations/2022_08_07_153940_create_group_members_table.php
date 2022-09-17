@@ -17,8 +17,10 @@ return new class extends Migration
             $table->id();
             $table->string('complete_at')->nullable();
             $table->string('approved_at')->nullable();
-            $table->string('reason_leave')->nullable();
+            $table->string('note')->nullable();
             $table->string('leave_at')->nullable();
+            $table->enum('transfer', [true, false])->nullable();
+            $table->foreignId('reason_leave_id')->nullable();
             $table->foreignId('group_id');
             $table->foreignId('user_id');
             $table->timestamps();

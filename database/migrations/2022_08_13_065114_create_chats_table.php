@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('type')->nullable();
             $table->bigInteger('from_id');
             $table->bigInteger('to_id')->nullable();
-            $table->string('message')->nullable();
+            $table->text('message')->nullable();
             $table->string('attachment')->nullable();
             $table->boolean('seen')->default(false);
             $table->timestamps();

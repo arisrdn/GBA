@@ -19,10 +19,10 @@ class Chat extends Model
     ];
     public function sender()
     {
-        return $this->belongsTo('User', 'sender_id');
+        return $this->belongsTo(User::class, 'from_id', 'id')->select(['id', 'name']);
     }
     public function to()
     {
-        return $this->belongsTo('User', 'to_id');
+        return $this->belongsTo(User::class, 'to_id')->select(['id', 'name']);
     }
 }

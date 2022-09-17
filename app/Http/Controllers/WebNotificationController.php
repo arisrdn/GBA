@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\Message;
+use App\Helpers\Notify;
+use App\Models\Group;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -34,10 +37,21 @@ class WebNotificationController extends Controller
 
     public function sendWebNotification(Request $request)
     {
-        $url = 'https://fcm.googleapis.com/fcm/send';
-        // $FcmToken = User::whereNotNull('device_token')->pluck('device_token')->all();
+
+        $group_id = 2;
+        $test = User::whereHas('adminGroup', function ($q1) use ($group_id) {
+            $q1->where('group_id', $group_id)
+                ->select('id', 'name');
+        })->get();
+        Notify::GlobalUserNotify(Message::REGISTER);
+        Notify::joingroup(5, 2);
+        dd($test);
+
+        // dd($request);
+        // $url = 'https://fcm.googleapis.com/fcm/send';
+        $FcmToken = User::whereNotNull('device_token')->pluck('device_token')->all();
         // $FcmToken = ["cbF3HrSqB1iVe6kj7XRzz0:APA91bHeAIWwZbwvT9hpNSbjphRshlRZ2mrbqHN4BiTvoiO-yjGBpAxIzcU9yWMvwYmz0T-7-VFEhFMMKSGIwsKDMc4q4VS0dJPOUdvUCV50zpXLcjM3hQNRxhlBuH6Ya9LcFMm0_bYV", "fw8QCcBAgmODPsqtBcMm4n:APA91bGlT-QY9yHS6L1s5oIT68jhg6qxsHHWRI_lAyO-Nfh90V4EXxywr9lHHvP-fkbBr28hGPqEK1TZkkbyrJBhHe9A-2DX3lanQy0LhRJ35NKQsFLqLMTN3Rbr_R9BFlyqJic58xHL"];
-        $FcmToken = ["fw8QCcBAgmODPsqtBcMm4n:APA91bGlT-QY9yHS6L1s5oIT68jhg6qxsHHWRI_lAyO-Nfh90V4EXxywr9lHHvP-fkbBr28hGPqEK1TZkkbyrJBhHe9A-2DX3lanQy0LhRJ35NKQsFLqLMTN3Rbr_R9BFlyqJic58xHL"];
+        // $FcmToken = ["fw8QCcBAgmODPsqtBcMm4n:APA91bGlT-QY9yHS6L1s5oIT68jhg6qxsHHWRI_lAyO-Nfh90V4EXxywr9lHHvP-fkbBr28hGPqEK1TZkkbyrJBhHe9A-2DX3lanQy0LhRJ35NKQsFLqLMTN3Rbr_R9BFlyqJic58xHL"];
         // dd($FcmToken);
 
         // $serverKey = 'BCTiSuRkN71sKQaXyYmufcNi0RqcZec-TODF7RHnLmnHGGTNdquvG4LtWX4TtZk9utfOKujQqMY2Nm3UwuGoav0';
@@ -66,9 +80,6 @@ class WebNotificationController extends Controller
         $notification = $notificationBuilder->build();
         $data = $dataBuilder->build();
 
-        // $token = "cbF3HrSqB1iVe6kj7XRzz0:APA91bHeAIWwZbwvT9hpNSbjphRshlRZ2mrbqHN4BiTvoiO-yjGBpAxIzcU9yWMvwYmz0T-7-VFEhFMMKSGIwsKDMc4q4VS0dJPOUdvUCV50zpXLcjM3hQNRxhlBuH6Ya9LcFMm0_bYV";
-        // $token = "fw8QCcBAgmODPsqtBcMm4n:APA91bGlT-QY9yHS6L1s5oIT68jhg6qxsHHWRI_lAyO-Nfh90V4EXxywr9lHHvP-fkbBr28hGPqEK1TZkkbyrJBhHe9A-2DX3lanQy0LhRJ35NKQsFLqLMTN3Rbr_R9BFlyqJic58xHL";
-        // You must change it to get your tokens
         $tokens = User::whereNotNull('device_token')->pluck('device_token')->all();
 
         $downstreamResponse = FCM::sendTo($tokens, $option, $notification, $data);

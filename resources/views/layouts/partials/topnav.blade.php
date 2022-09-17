@@ -10,16 +10,20 @@
     </div>
 </form>
 <ul class="navbar-nav navbar-right">
-    <li class="dropdown dropdown-list-toggle"><a href="#" data-toggle="dropdown"
-            class="nav-link notification-toggle nav-link-lg {{-- {{ Auth::user()->unreadNotifications->count() ? ' beep' : '' }} --}}"><i class="far fa-bell"></i></a>
+    <li class="dropdown dropdown-list-toggle">
+        <div id="notify"></div>
+        {{-- <a href="#" data-toggle="dropdown"
+            class="nav-link notification-toggle nav-link-lg {{ Auth::user()->unreadNotifications->count() ? ' beep' : '' }}"><i
+                class="far fa-bell"></i></a>
         <div class="dropdown-menu dropdown-list dropdown-menu-right">
-            <div class="dropdown-header">Notifications
+            <div class="dropdown-header">Notifications <span
+                    class="badge badge-info">{{ Auth::user()->unreadNotifications->count() }}</span>
                 <div class="float-right">
                     <a href="#">Mark All As Read</a>
                 </div>
             </div>
             <div class="dropdown-list-content dropdown-list-icons">
-                {{-- @if (Auth::user()->unreadNotifications->count())
+                @if (Auth::user()->unreadNotifications->count())
                     @for ($i = 1; $i < 40; $i++)
                         <a href="#" class="dropdown-item dropdown-item-unread">
                             <div class="dropdown-item-icon bg-primary text-white">
@@ -33,8 +37,8 @@
                     @endfor
                 @else
                     <p class="text-muted p-2 text-center">No notifications found!</p>
-                @endif --}}
-            </div>
+                @endif
+            </div> --}}
     </li>
     <li class="dropdown"><a href="#" data-toggle="dropdown"
             class="nav-link dropdown-toggle nav-link-lg nav-link-user">
