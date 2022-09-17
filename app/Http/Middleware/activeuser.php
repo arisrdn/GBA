@@ -24,8 +24,8 @@ class activeuser
         $token = PersonalAccessToken::findToken($hashedTooken);
         $data = $token->tokenable;
         // $check = GroupMember::where('user_id', '=', $data->id):
-        // dd($data->memberactive);
-        if ($data->memberactive) {
+        if (isset($data->memberactive[0])) {
+            // dd("masuk");
             $check = $data->memberactive[0];
             if ($type == "join") {
                 if ($check->leave_at == null && $check->complete_at == null && $check->transfer == null) {
